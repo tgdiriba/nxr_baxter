@@ -8,29 +8,36 @@ class AlvarRectifier():
 	def __init__(self):
 		self.X_OFFSET, self.Y_OFFSET, self.Z_OFFSET = float(0.0), float(0.0), float(0.0)
 		self.rectified_response = AlvarMarkers()
+		print "A"
 		rospy.init_node('nxr_ar_rectifier')
 		rospy.Subscriber('ar_pose_marker', AlvarMarkers, self.rectify_markers)
 		self.ar_pub = rospy.Publisher('nxr_ar_rectifier', AlvarMarkers)								
+		print "B"
 		self.ar_rectifier()	
 
 	def rectify_markers(self, response):
 		for marker in response.markers:
 			marker_pose = marker.pose.pose
-			marker_pose.position.x += self.X_OFFSET
-			marker_pose.position.y += self.Y_OFFSET
-			marker_pose.position.z += self.Z_OFFSET
+			print "%s, %s, %s", (type(marker_pose),type(marker_pose.point),type(marker_pose.x))
+			marker_pose.point.x += self.X_OFFSET
+			marker_pose.point.y += self.Y_OFFSET
+			marker_pose.point.z += self.Z_OFFSET
 		
 		self.rectified_response = response
 	
 	def ar_rectifier(self):
+		print "C"
 		self.ar_rate = rospy.Rate(100)
 		while not rospy.is_shutdown():
 			self.ar_pub.publish(self.rectified_response)
-			self.ar_rate.sleep()
+			print "D"
+			rospy.sleep(self.ar_rate)
 
 if __name__ == '__main__':
 	try:
 		rectifier = AlvarRectifier()
 	except Exception, e:
+		print "E"
+		print type(e)
 		print e
 
