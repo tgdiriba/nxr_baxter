@@ -23,6 +23,8 @@ find_package(catkin
   tf
   dynamic_reconfigure
   cv_bridge
+	
+	ar_track_alvar
 )
 
 catkin_python_setup()
@@ -51,4 +53,12 @@ catkin_package(
   tf
   dynamic_reconfigure
   cv_bridge
+
+	ar_track_alvar
 )
+
+# include_directories(include ${catkin_INCLUDE_DIRS})
+
+# add_executable(nxr_baxter_demo_package src/moveit_test_0.cpp)
+# target_link_libraries(nxr_baxter_demo_package ${catkin_LIBRARIES})
+# add_dependencies(nxr_baxter_demo_package ${catkin_EXPORTED_TARGETS})

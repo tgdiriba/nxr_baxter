@@ -1,0 +1,9 @@
+rosdistro: 'groovy
+
+  '
+roslaunch:
+  uris: {host_tgd_robonet_0__34222: 'http://tgd-robonet-0:34222/'}
+rosversion: '1.9.55
+
+  '
+run_id: d4b719d2-f511-11e3-8a9a-681729069929

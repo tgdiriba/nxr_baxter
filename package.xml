@@ -36,6 +36,8 @@
   <build_depend>tf</build_depend>
   <build_depend>cv_bridge</build_depend>
   <build_depend>dynamic_reconfigure</build_depend>
+	
+	<build_depend>ar_track_alvar</build_depend>
   <!---->
 
   <!--Run_depends-->
@@ -60,6 +62,8 @@
   <run_depend>tf</run_depend>
   <run_depend>cv_bridge</run_depend>
   <run_depend>dynamic_reconfigure</run_depend>
+	
+	<run_depend>ar_track_alvar</run_depend>
   <!---->
 
   <!---->
