@@ -13,9 +13,9 @@ class InvalidBlockSpaceError(Exception):
 		return self.error_message
 
 class Block():
-	"Basic block structure that will be identified and manipulated by Baxter. \
+	"""Basic block structure that will be identified and manipulated by Baxter. \
 	Maybe possible to adjoint multiple Block structures to create different types of \
-	shapes."
+	shapes."""
 	
 	def __init__():
 		self.dimensions = (0.0, 0.0, 0.0); # x, y, z
@@ -23,12 +23,12 @@ class Block():
 		self.position = None
 	
 	def set_parent(self, parent):
-		"Takes a BlockSpace as a container for the Block"
+		"""Takes a BlockSpace as a container for the Block"""
 		if isinstance(parent, StackSpace): self.parent = parent
 		else: raise InvalidBlockSpaceError
 	
 	def set_position(self, position):
-		"Takes a 3-tuple as the position variable"
+		"""Takes a 3-tuple as the position variable"""
 		if position is tuple and len(position) is 2 and all([type(k) is float or int for k in position]):
 			# Transform the check into helper function.
 			self.position = position
@@ -36,8 +36,8 @@ class Block():
 	
 
 class BlockSpace():
-	"Container for stable, grounded, base blocks ontop of which other levels of \
-	Blocks can be stacked."
+	"""Container for stable, grounded, base blocks ontop of which other levels of \
+	Blocks can be stacked."""
 	
 	def __init__(self):
 		self.blocks = []	# List of Blocks
