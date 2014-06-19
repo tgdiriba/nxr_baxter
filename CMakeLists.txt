@@ -19,7 +19,7 @@ find_package(catkin
   nxr_baxter_msgs
   
   baxter_interface
-	
+
 	moveit_commander
 	moveit_core
 	# moveit_full
@@ -44,6 +44,7 @@ find_package(catkin
   tf
   dynamic_reconfigure
   cv_bridge
+	image_transport
 )
 
 catkin_python_setup()
@@ -93,6 +94,7 @@ catkin_package(
   tf
   dynamic_reconfigure
   cv_bridge
+	image_transport
 )
 
 include_directories(include ${catkin_INCLUDE_DIRS})
@@ -106,5 +108,43 @@ target_link_libraries(moveit_test_1  ${catkin_LIBRARIES})
 add_dependencies(moveit_test_1 moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
 
 add_executable(moveit_test_2 src/moveit_test_2.cpp)
-target_link_libraries(moveit_test_2  ${catkin_LIBRARIES})
+target_link_libraries(moveit_test_2  
+	${catkin_LIBRARIES}
+	
+	opencv_core
+	opencv_imgproc
+	opencv_highgui
+	opencv_ml
+	opencv_video
+	opencv_features2d
+	opencv_calib3d
+	opencv_objdetect
+	opencv_contrib
+	opencv_legacy
+	opencv_stitching
+
+	pthread
+
+)
 add_dependencies(moveit_test_2 moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
+
+add_executable(webcam_video_publisher src/webcam_video_publisher.cpp)
+target_link_libraries(webcam_video_publisher  
+	${catkin_LIBRARIES}
+	
+	opencv_core
+	opencv_imgproc
+	opencv_highgui
+	opencv_ml
+	opencv_video
+	opencv_features2d
+	opencv_calib3d
+	opencv_objdetect
+	opencv_contrib
+	opencv_legacy
+	opencv_stitching
+
+	pthread
+
+)
+add_dependencies(webcam_video_publisher moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
