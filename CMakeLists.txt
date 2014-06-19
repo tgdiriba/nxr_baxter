@@ -19,6 +19,27 @@ find_package(catkin
   nxr_baxter_msgs
   
   baxter_interface
+	
+	moveit_commander
+	moveit_core
+	# moveit_full
+	moveit_msgs
+	# moveit_planners
+	moveit_planners_ompl
+	# moveit_plugins
+	# moveit_ros
+	moveit_ros_benchmarks
+	moveit_ros_benchmarks_gui
+	moveit_ros_manipulation
+	moveit_ros_move_group
+	moveit_ros_perception
+	moveit_ros_planning
+	moveit_ros_planning_interface
+	moveit_ros_robot_interaction
+	moveit_ros_visualization
+	moveit_ros_warehouse
+	moveit_setup_assistant
+	moveit_simple_controller_manager
 
   tf
   dynamic_reconfigure
@@ -48,7 +69,42 @@ catkin_package(
   
   baxter_interface
 
+	moveit_commander
+	moveit_core
+	# moveit_full
+	moveit_msgs
+	# moveit_planners
+	moveit_planners_ompl
+	# moveit_plugins
+	# moveit_ros
+	moveit_ros_benchmarks
+	moveit_ros_benchmarks_gui
+	moveit_ros_manipulation
+	moveit_ros_move_group
+	moveit_ros_perception
+	moveit_ros_planning
+	moveit_ros_planning_interface
+	moveit_ros_robot_interaction
+	moveit_ros_visualization
+	moveit_ros_warehouse
+	moveit_setup_assistant
+	moveit_simple_controller_manager
+
   tf
   dynamic_reconfigure
   cv_bridge
 )
+
+include_directories(include ${catkin_INCLUDE_DIRS})
+
+add_executable(moveit_test_0 src/moveit_test_0.cpp)
+target_link_libraries(moveit_test_0  ${catkin_LIBRARIES})
+add_dependencies(moveit_test_0 moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
+
+add_executable(moveit_test_1 src/moveit_test_1.cpp)
+target_link_libraries(moveit_test_1  ${catkin_LIBRARIES})
+add_dependencies(moveit_test_1 moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
+
+add_executable(moveit_test_2 src/moveit_test_2.cpp)
+target_link_libraries(moveit_test_2  ${catkin_LIBRARIES})
+add_dependencies(moveit_test_2 moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
