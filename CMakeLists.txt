@@ -12,6 +12,7 @@ find_package(catkin
   sensor_msgs
   std_msgs
   geometry_msgs
+	shape_msgs
   control_msgs
   trajectory_msgs
   baxter_core_msgs
@@ -61,6 +62,7 @@ catkin_package(
   sensor_msgs
   std_msgs
   geometry_msgs
+	shape_msgs
   control_msgs
   trajectory_msgs
   baxter_core_msgs
@@ -148,3 +150,24 @@ target_link_libraries(webcam_video_publisher
 
 )
 add_dependencies(webcam_video_publisher moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
+
+add_executable(moveit_test_3 src/moveit_test_3.cpp)
+target_link_libraries(moveit_test_3
+	${catkin_LIBRARIES}
+	
+	opencv_core
+	opencv_imgproc
+	opencv_highgui
+	opencv_ml
+	opencv_video
+	opencv_features2d
+	opencv_calib3d
+	opencv_objdetect
+	opencv_contrib
+	opencv_legacy
+	opencv_stitching
+
+	pthread
+
+)
+add_dependencies(moveit_test_3 moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)

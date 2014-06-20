@@ -16,6 +16,7 @@ pthread_t tids[NUM_CHILD_THREADS];
 
 void *image_func(void *thread_data)
 {
+	ros::NodeHandle nh;
 	ros::Rate loop_rate(10);
 	
 	Mat image = imread("/home/tgd/ros_ws/src/nxr_baxter/images/lc.jpg", CV_LOAD_IMAGE_UNCHANGED);
@@ -25,13 +26,10 @@ void *image_func(void *thread_data)
 		ROS_ERROR("Could not find or open the image");
 	}
 	else {
+		imshow("Test OpenCV", image);
 		while(ros::ok()) {
-			
-			imshow("Test OpenCV", image);
-			waitKey(0);
-	
+			loop_rate.sleep();	
 			ros::spinOnce();
-			loop_rate.sleep();
 		}
 	}
 
@@ -42,13 +40,15 @@ int main(int argc, char **argv)
 {
 
 	ros::init(argc, argv, "move_group_interface_test_0", ros::init_options::AnonymousName);
-
+	
+	ros::NodeHandle nh;
 	ros::Duration(1).sleep();	
-	pthread_create(&(tids[0]), NULL, image_func, NULL);
 	
 	ros::AsyncSpinner spinner(1);
 	spinner.start();
 
+	pthread_create(&(tids[0]), NULL, image_func, NULL);
+	
 	move_group_interface::MoveGroup left_hand("left_hand");
 	move_group_interface::MoveGroup right_hand("right_hand");
 
