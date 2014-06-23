@@ -122,8 +122,8 @@ target_link_libraries(webcam_video_publisher
 )
 add_dependencies(webcam_video_publisher moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
 
-add_executable(moveit_test_6 src/moveit_test_6.cpp)
-target_link_libraries(moveit_test_6
+add_executable(moveit_ar_environment src/moveit_ar_environment.cpp)
+target_link_libraries(moveit_ar_environment
 	${catkin_LIBRARIES}
 	
 	opencv_core
@@ -141,4 +141,4 @@ target_link_libraries(moveit_test_6
 	pthread
 
 )
-add_dependencies(moveit_test_6 moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
+add_dependencies(moveit_ar_environment moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)

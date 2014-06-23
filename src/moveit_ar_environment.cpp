@@ -55,6 +55,8 @@ void setupCageEnvironment(ros::NodeHandle& nh, string planning_frame = string("/
 	ros::Duration(2.0).sleep();
 }
 
+void updateBlockPositions( vector<
+
 int main(int argc, char **argv)
 {
 	ros::init( argc, argv, "moveit_test_3" );
