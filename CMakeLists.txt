@@ -101,35 +101,6 @@ catkin_package(
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-add_executable(moveit_test_0 src/moveit_test_0.cpp)
-target_link_libraries(moveit_test_0  ${catkin_LIBRARIES})
-add_dependencies(moveit_test_0 moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
-
-add_executable(moveit_test_1 src/moveit_test_1.cpp)
-target_link_libraries(moveit_test_1  ${catkin_LIBRARIES})
-add_dependencies(moveit_test_1 moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
-
-add_executable(moveit_test_2 src/moveit_test_2.cpp)
-target_link_libraries(moveit_test_2  
-	${catkin_LIBRARIES}
-	
-	opencv_core
-	opencv_imgproc
-	opencv_highgui
-	opencv_ml
-	opencv_video
-	opencv_features2d
-	opencv_calib3d
-	opencv_objdetect
-	opencv_contrib
-	opencv_legacy
-	opencv_stitching
-
-	pthread
-
-)
-add_dependencies(moveit_test_2 moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
-
 add_executable(webcam_video_publisher src/webcam_video_publisher.cpp)
 target_link_libraries(webcam_video_publisher  
 	${catkin_LIBRARIES}
@@ -151,8 +122,8 @@ target_link_libraries(webcam_video_publisher
 )
 add_dependencies(webcam_video_publisher moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
 
-add_executable(moveit_test_3 src/moveit_test_3.cpp)
-target_link_libraries(moveit_test_3
+add_executable(moveit_test_6 src/moveit_test_6.cpp)
+target_link_libraries(moveit_test_6
 	${catkin_LIBRARIES}
 	
 	opencv_core
@@ -170,4 +141,4 @@ target_link_libraries(moveit_test_3
 	pthread
 
 )
-add_dependencies(moveit_test_3 moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
+add_dependencies(moveit_test_6 moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)

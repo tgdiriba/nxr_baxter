@@ -1,5 +1,11 @@
 <launch>
-   
+
+	<!-- include ns="sim" file="$(find baxter_gazebo)/launch/baxter_world.launch" /-->
+
+	<node name="$(anon joint_trajectory_action_server)" pkg="baxter_interface" type="joint_trajectory_action_server.py" respawn="true" />
+	 
+	<node name="$(anon enable_robot)" pkg="baxter_tools" type="enable_robot.py" args="-e" />
+  
   <include file="$(find baxter_moveit_config)/launch/planning_context.launch">
     <arg name="load_robot_description" value="true"/>
   </include>
