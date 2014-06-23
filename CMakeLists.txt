@@ -44,7 +44,7 @@ find_package(catkin
 
   tf
   dynamic_reconfigure
-  cv_bridge
+#  cv_bridge
 	image_transport
 )
 
@@ -101,42 +101,42 @@ catkin_package(
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-add_executable(webcam_video_publisher src/webcam_video_publisher.cpp)
-target_link_libraries(webcam_video_publisher  
-	${catkin_LIBRARIES}
-	
-	opencv_core
-	opencv_imgproc
-	opencv_highgui
-	opencv_ml
-	opencv_video
-	opencv_features2d
-	opencv_calib3d
-	opencv_objdetect
-	opencv_contrib
-	opencv_legacy
-	opencv_stitching
-
-	pthread
-
-)
-add_dependencies(webcam_video_publisher moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
+#add_executable(webcam_video_publisher src/webcam_video_publisher.cpp)
+#target_link_libraries(webcam_video_publisher  
+#	${catkin_LIBRARIES}
+#	
+#	opencv_core
+#	opencv_imgproc
+#	opencv_highgui
+#	opencv_ml
+#	opencv_video
+#	opencv_features2d
+#	opencv_calib3d
+#	opencv_objdetect
+#	opencv_contrib
+#	opencv_legacy
+#	opencv_stitching
+#
+#	pthread
+# 
+# ) 
+# add_dependencies(webcam_video_publisher moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
 
 add_executable(moveit_ar_environment src/moveit_ar_environment.cpp)
 target_link_libraries(moveit_ar_environment
 	${catkin_LIBRARIES}
 	
-	opencv_core
-	opencv_imgproc
-	opencv_highgui
-	opencv_ml
-	opencv_video
-	opencv_features2d
-	opencv_calib3d
-	opencv_objdetect
-	opencv_contrib
-	opencv_legacy
-	opencv_stitching
+	# opencv_core
+	# opencv_imgproc
+	# opencv_highgui
+	# opencv_ml
+	# opencv_video
+	# opencv_features2d
+	# opencv_calib3d
+	# opencv_objdetect
+	# opencv_contrib
+	# opencv_legacy
+	# opencv_stitching
 
 	pthread
 
