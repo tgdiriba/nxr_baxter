@@ -25,4 +25,12 @@ Block B
 Block C
 ---
 + Dimensions
-		* 4.45 
+		* 4.45
+
+Baxter /base to Ground Plane
+---
++ Position
+		* x: 24"
+		* y: 23"
+		* z: 35"
+ 

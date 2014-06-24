@@ -46,7 +46,7 @@ find_package(catkin
 
   tf
   dynamic_reconfigure
-#  cv_bridge
+  cv_bridge
 	image_transport
 )
 
@@ -111,17 +111,10 @@ add_library(nxr_baxter_ar
 target_link_libraries(nxr_baxter_ar ${catkin_LIBRARIES})
 add_dependencies(nxr_baxter_ar moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
 
-<<<<<<< HEAD
-#add_executable(webcam_video_publisher src/webcam_video_publisher.cpp)
-#target_link_libraries(webcam_video_publisher  
-#	${catkin_LIBRARIES}
-#	
-=======
 add_executable(webcam_video_publisher src/webcam_video_publisher.cpp)
 target_link_libraries(webcam_video_publisher  
 	${catkin_LIBRARIES}
-	
->>>>>>> e0bf515741c6248b2f690e60c3ddc611a2a29b09
+
 #	opencv_core
 #	opencv_imgproc
 #	opencv_highgui
@@ -133,19 +126,11 @@ target_link_libraries(webcam_video_publisher
 #	opencv_contrib
 #	opencv_legacy
 #	opencv_stitching
-<<<<<<< HEAD
-#
-#	pthread
-# 
-# ) 
-# add_dependencies(webcam_video_publisher moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
-=======
 
 	pthread
  
- ) 
- add_dependencies(webcam_video_publisher moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
->>>>>>> e0bf515741c6248b2f690e60c3ddc611a2a29b09
+) 
+add_dependencies(webcam_video_publisher moveit_msgs_gencpp nxr_baxter_msgs_generate_message_cpp)
 
 add_executable(moveit_ar_environment src/moveit_ar_environment.cpp)
 target_link_libraries(moveit_ar_environment

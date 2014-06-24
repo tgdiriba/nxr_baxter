@@ -8,6 +8,15 @@
 
 namespace nxr {
 
+enum BLOCK_TYPE {
+	BLOCK_A,
+	BLOCK_B,
+	BLOCK_C,
+	BLOCK_NUM
+};
+
+// const float g_block_sizes[BLOCK_NUM]; // = { 0.063, 0.051, 0.045 };
+
 typedef struct _dimensions {
 	float x;
 	float y;
@@ -17,12 +26,13 @@ typedef struct _dimensions {
 class ARBlock {
 public:
 	
-	ARBlock();
+	ARBlock(unsigned int b_type = BLOCK_A);
 	ARBlock(float *dims, int id = 0);	
 	moveit_msgs::CollisionObject toCollisionObject(std::string planning_frame = std::string("/base"));	
 
 	geometry_msgs::Pose pose_;
-	int id_;
+	unsigned int block_type_; 
+	unsigned int id_;
 	
 	union {
 		float dims_[3];

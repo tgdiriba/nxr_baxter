@@ -20,9 +20,12 @@
 
 namespace nxr {
 
+// static const float g_table_dimensions[3];
+// static const float g_table_position[3];
+
 class ARWorldBuilder {
 public:
-	ARWorldBuilder(unsigned int cutoff = 75);
+	ARWorldBuilder(unsigned int cutoff = 0);
 	
 	void setupCageEnvironment(std::string planning_frame = std::string("/base"));
 	void arPoseMarkerCallback(const ar_track_alvar::AlvarMarkers::ConstPtr& markers_msg);

@@ -5,6 +5,9 @@ namespace nxr {
 using namespace moveit;
 using namespace std;
 
+static const float g_table_dimensions[3] = { 0.608012, 1.21602, 0.60325 };
+// static const float g_table_position[3] = { 0.608012, 1.21602, 0.60325 };
+
 ARWorldBuilder::ARWorldBuilder(unsigned int cutoff) : cutoff_confidence_(cutoff)
 {
 	ROS_INFO("Constructing ARWorldBuilder...");
@@ -22,11 +25,8 @@ void ARWorldBuilder::createOrderedStack()
 
 void ARWorldBuilder::arPoseMarkerCallback(const ar_track_alvar::AlvarMarkers::ConstPtr& markers_msg)
 {
-	// vector< ar_track_alvar::AlvarMarker >::iterator it = markers_msg->markers.begin();
-	// vector< ar_track_alvar::AlvarMarker >::iterator end = markers_msg->markers.end();
-	
 	for(int i = 0; i < markers_msg->markers.size(); i++) {
-		// Use a cutoff confidence
+		// Use a cutoff confidence, by default this is 0
 		if( markers_msg->markers[i].confidence >= cutoff_confidence_ ) {
 			// Eventually differentiate the different marker types
 			ar_blocks_[ markers_msg->markers[i].id ].pose_ = markers_msg->markers[i].pose.pose;
@@ -51,15 +51,16 @@ void ARWorldBuilder::setupCageEnvironment(string planning_frame)
 	vector < shape_msgs::SolidPrimitive > primitive_objects(1);
 	primitive_objects[0].type = shape_msgs::SolidPrimitive::BOX;
 	primitive_objects[0].dimensions.resize(3); 
-	primitive_objects[0].dimensions[0] = 0.75; 
-	primitive_objects[0].dimensions[1] = 1.5; 
-	primitive_objects[0].dimensions[2] = 0.375; 
+	primitive_objects[0].dimensions[0] = g_table_dimensions[0]; //0.608012; 
+	primitive_objects[0].dimensions[1] = g_table_dimensions[1]; //1.21602; 
+	primitive_objects[0].dimensions[2] = g_table_dimensions[2]; //0.60325; 
 	object_collection[0].primitives = primitive_objects;
 
+	// For now this is guesswork on where the center of the table is positioned
 	vector < geometry_msgs::Pose > primitive_object_poses(1);
-	primitive_object_poses[0].position.x = 1.0;
-	primitive_object_poses[0].position.y = 0.0;	
-	primitive_object_poses[0].position.z = -0.1875;
+	primitive_object_poses[0].position.x = 0.6069 + (g_table_dimensions[0]/2);
+	primitive_object_poses[0].position.y = 0.5842 - g_table_dimensions[1];	
+	primitive_object_poses[0].position.z = -0.889 + (g_table_dimensions[2]/2);
 	primitive_object_poses[0].orientation.w = 1.0;
 	object_collection[0].primitive_poses = primitive_object_poses;	
 	object_collection[0].operation = moveit_msgs::CollisionObject::ADD;
