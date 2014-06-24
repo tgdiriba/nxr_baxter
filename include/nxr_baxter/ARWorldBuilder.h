@@ -11,6 +11,7 @@
 #include <shape_msgs/SolidPrimitive.h>
 #include <geometry_msgs/Pose.h>
 #include <map>
+#include <deque>
 #include <string>
 #include <sstream>
 #include <pthread.h>
@@ -26,12 +27,17 @@ namespace nxr {
 class ARWorldBuilder {
 public:
 	ARWorldBuilder(unsigned int cutoff = 0);
+	~ARWorldBuilder();
 	
 	void setupCageEnvironment(std::string planning_frame = std::string("/base"));
 	void arPoseMarkerCallback(const ar_track_alvar::AlvarMarkers::ConstPtr& markers_msg);
 	void updateWorld();	
 
 	void createOrderedStack();
+
+	static void *updateThread(void *td);
+	std::deque<pthread_t> thread_ids_;
+	pthread_mutex_t ar_blocks_mutex_;
 	
 	ros::NodeHandle nh_;
 	ros::Publisher collision_object_pub_;
