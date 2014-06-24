@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #include <ros/ros.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <moveit/move_group_interface/move_group.h>
@@ -12,11 +11,22 @@
 #include <string>
 #include <sstream>
 #include <pthread.h>
-#include <ar_block.h>
+#include <AlvarBlock.h>
 
 
 using namespace moveit;
 using namespace std;
+using namespace nxr;
+
+void arPoseMarkerCallback(const ar_track_alvar::AlvarMarkers::ConstPtr& markers_msg)
+{
+	vector< ar_track_alvar::AlvarMarker >::iterator it = markers_msg->markers.begin();
+	vector< ar_track_alvar::AlvarMarker >::iterator end = markers_msg->markers.end();
+	
+	for( ; it != end; it++ ) {
+		
+	}
+}
 
 void setupCageEnvironment(string planning_frame = string("/base"))
 {
@@ -60,37 +70,38 @@ void setupCageEnvironment(string planning_frame = string("/base"))
 	ros::Duration(2.0).sleep();
 }
 
-void updateBlocks( vector< ar_block > blocks )
+void updateBlocks( vector< AlvarBlock > blocks )
 {
 	ros::NodeHandle nh;
 	ros::Publisher block_publisher = nh.advertise< moveit_msgs::CollisionObject >("collision_object", 10);
 	vector< moveit_msgs::CollisionObject > block_collection( blocks.size() );
 	
-	for( vector< ar_block >::iterator it = blocks.begin(); it != blocks.end(); it++ ) {
-		
+	for( vector< AlvarBlock >::iterator it = blocks.begin(); it != blocks.end(); it++ ) {
 		block_publisher.publisher( it.toCollisionObject() );
-
 	}
 
 	// Wait for all of the blocks to be registered
 	ros::Duration(2.0).sleep();	
 }
-=======
-#include <nxr_baxter/ARWorldBuilder.h>
 
-using namespace moveit;
-using namespace std;
-using namespace nxr;
->>>>>>> e0bf515741c6248b2f690e60c3ddc611a2a29b09
 
 int main(int argc, char **argv)
 {
 	ros::init( argc, argv, "nxr_alvar_blocks" );
 	ros::NodeHandle nh;
 		
-<<<<<<< HEAD
 	ros::AsyncSpinner spinner(1);
 	spinner.start();
+
+	// Create a dictionary of blocks
+	// Pruning? Filtering?
+	map<int, AlvarBlock> ar_blocks;
+	
+	// Updating the environment
+	while( ros::ok() ) {
+		
+	}
+
 
 	planning_interface::PlanningSceneInterface scene;
 	move_group_interface::MoveGroup both_arms("both_arms");
@@ -99,23 +110,40 @@ int main(int argc, char **argv)
 
 	setupCageEnvironment();
 
+
+	// main loop get all the block positions 
+
+	
+
 	// Getting the PlanningScene
 	ros::ServiceClient servc = nh.serviceClient<moveit_msgs::GetPlanningScene>("/get_planning_scene");
 
 	moveit_msgs::GetPlanningScene get_ps;
 	get_ps.request.components.components = moveit_msgs::PlanningSceneComponents::WORLD_OBJECT_NAMES | moveit_msgs::PlanningSceneComponents::WORLD_OBJECT_GEOMETRY;
-=======
-	ros::Rate loop_rate(30);
-	ARWorldBuilder block_world;
-	ROS_INFO("Successfully built AR World...");
->>>>>>> e0bf515741c6248b2f690e60c3ddc611a2a29b09
 	
-	// Updating the environment
-	while( ros::ok() ) {
-		block_world.updateWorld();
-		
-		loop_rate.sleep();
-		ros::spinOnce();
+	if( !servc.call(get_ps) ) {
+		ROS_ERROR("Failed to call service /get_planning_scene");
+	}
+	else {
+		for( vector< moveit_msgs::CollisionObject >::iterator object = get_ps.response.scene.world.collision_objects.begin(); object != get_ps.response.scene.world.collision_objects.end(); object++ ) {
+			ROS_INFO("Collision object id: %s", object->id.c_str());
+		}
 	}
 
+	// Plan a motion with left_arm
+	geometry_msgs::Pose left_target;
+	left_target.position.x = 1.0;
+	left_target.position.y = -0.7;
+	left_target.position.z = 1.0;
+	left_target.orientation.w = 1.0;
+
+	left_arm.setPoseTarget(left_target);
+	planning_interface::MoveGroup::Plan left_plan;
+	bool success = left_arm.plan(left_plan);
+
+	ROS_INFO("Left plan %s", success ? "success" : "failure");	
+
+	if( success ) left_arm.move();
+
+	ros::waitForShutdown();
 }
