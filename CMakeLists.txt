@@ -7,6 +7,8 @@ find_package(catkin
   roscpp 
   roslib
   actionlib
+	
+	OpenCV
 
   message_generation
   sensor_msgs
@@ -44,7 +46,7 @@ find_package(catkin
 
   tf
   dynamic_reconfigure
-#  cv_bridge
+  cv_bridge
 	image_transport
 )
 
@@ -53,6 +55,7 @@ catkin_python_setup()
 # generate_messages(DEPENDENCIES sensor_msgs std_msgs geometry_msgs control_msgs trajectory_msgs baxter_core_msgs skeletonmsgs_nu)
 
 catkin_package(
+	INCLUDE_DIRS include
   CATKIN_DEPENDS
   rospy
   roscpp
@@ -99,7 +102,14 @@ catkin_package(
 	image_transport
 )
 
-include_directories(include ${catkin_INCLUDE_DIRS})
+include_directories(include ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
+
+add_library(nxr_baxter_ar
+	src/ARBlock.cpp
+	src/ARWorldBuilder.cpp
+)
+target_link_libraries(nxr_baxter_ar ${catkin_LIBRARIES})
+add_dependencies(nxr_baxter_ar ${PROJECT_NAME}_gencpp)
 
 #add_executable(webcam_video_publisher src/webcam_video_publisher.cpp)
 #target_link_libraries(webcam_video_publisher  

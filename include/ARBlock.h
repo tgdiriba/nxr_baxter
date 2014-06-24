@@ -1,16 +1,21 @@
 #include <geometry_msgs/Pose.h>
 #include <moveit_msgs/CollisionObject>
+#include <sstream>
+#include <string>
 
-class ar_block {
+namespace nxr {
+
+class ARBlock {
 public:
-	ar_block();
-	ar_block(float *dims, int id = 0);	
+	
+	ARBlock();
+	ARBlock(float *dims, int id = 0);	
 	moveit_msgs::CollisionObject toCollisionObject(std::string planning_frame = std::string("/base"));	
 
-	geometry_msgs::Pose pose;
-	int id;
+	geometry_msgs::Pose pose_;
+	int id_;
 	
-	union {
+	union dimensions_ {
 		float all[3];
 		struct {
 			float x;
@@ -19,3 +24,5 @@ public:
 		};
 	};
 };
+
+}
