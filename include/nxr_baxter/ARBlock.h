@@ -1,9 +1,18 @@
+#ifndef ARBLOCK_H
+#define ARBLOCK_H
+
 #include <geometry_msgs/Pose.h>
-#include <moveit_msgs/CollisionObject>
+#include <moveit_msgs/CollisionObject.h>
 #include <sstream>
 #include <string>
 
 namespace nxr {
+
+typedef struct _dimensions {
+	float x;
+	float y;
+	float z;
+} dimensions;
 
 class ARBlock {
 public:
@@ -15,14 +24,12 @@ public:
 	geometry_msgs::Pose pose_;
 	int id_;
 	
-	union dimensions_ {
-		float all[3];
-		struct {
-			float x;
-			float y;
-			float z;
-		};
+	union {
+		float dims_[3];
+		dimensions dimensions_;
 	};
 };
 
 }
+
+#endif

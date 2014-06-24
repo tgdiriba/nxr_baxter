@@ -1,4 +1,4 @@
-#include <ARWorldBuilder.h>
+#include <nxr_baxter/ARWorldBuilder.h>
 
 namespace nxr {
 
@@ -7,30 +7,43 @@ using namespace std;
 
 ARWorldBuilder::ARWorldBuilder(unsigned int cutoff) : cutoff_confidence_(cutoff)
 {
-	collision_object_pub_ = nh_.advertise<moveit_msgs::CollisionObject>("collision_object", 10);
-	ar_pose_marker_sub_ = nh_.subscribe("ar_pose_marker", 100, &ARWorldBuilder::arPoseMarkerCallback, this);
+	ROS_INFO("Constructing ARWorldBuilder...");
+	collision_object_pub_ = nh_.advertise<moveit_msgs::CollisionObject>("collision_object", 30);
+	ar_pose_marker_sub_ = nh_.subscribe("ar_pose_marker", 60, &ARWorldBuilder::arPoseMarkerCallback, this);
 	setupCageEnvironment();
+}
+
+void ARWorldBuilder::createOrderedStack()
+{
+	// Stack all blocks ontop of each other, largest to smallest
+
+	
 }
 
 void ARWorldBuilder::arPoseMarkerCallback(const ar_track_alvar::AlvarMarkers::ConstPtr& markers_msg)
 {
-	vector< ar_track_alvar::AlvarMarker >::iterator it = markers_msg->markers.begin();
-	vector< ar_track_alvar::AlvarMarker >::iterator end = markers_msg->markers.end();
+	// vector< ar_track_alvar::AlvarMarker >::iterator it = markers_msg->markers.begin();
+	// vector< ar_track_alvar::AlvarMarker >::iterator end = markers_msg->markers.end();
 	
-	for( ; it != end; it++) {
+	for(int i = 0; i < markers_msg->markers.size(); i++) {
 		// Use a cutoff confidence
-		if( it->confidence >= cutoff_confidence_ ) {
+		if( markers_msg->markers[i].confidence >= cutoff_confidence_ ) {
 			// Eventually differentiate the different marker types
-			ar_blocks_[ it->id ].pose_ = it->pose.pose;
+			ar_blocks_[ markers_msg->markers[i].id ].pose_ = markers_msg->markers[i].pose.pose;
 		}
 	}
 }
 
 void ARWorldBuilder::setupCageEnvironment(string planning_frame)
 {
+	ROS_INFO("Setting up the cage environment...");
 	vector< moveit_msgs::CollisionObject > object_collection(1);
 
+	planning_interface::MoveGroup left_arm("left_arm");
+	planning_frame = left_arm.getPlanningFrame();
+
 	// Setup the table
+	ROS_INFO("Adding table to the cage environment, using planning frame %s", planning_frame.c_str());
 	object_collection[0] = moveit_msgs::CollisionObject();
 	object_collection[0].header.frame_id = planning_frame;	
 	object_collection[0].id = "table";
@@ -61,6 +74,7 @@ void ARWorldBuilder::setupCageEnvironment(string planning_frame)
 		collision_object_pub_.publish(*object);
 	}
 	
+	ROS_INFO("Waiting for published colllision objects to be registered...");
 	ros::Duration(2.0).sleep();
 }
 
@@ -70,11 +84,8 @@ void ARWorldBuilder::updateWorld()
 	map<unsigned int,ARBlock>::iterator end = ar_blocks_.end();	
 
 	for( ; it != end; it++ ) {
-		block_publisher.publisher( it->toCollisionObject() );
+		collision_object_pub_.publish( it->second.toCollisionObject() );
 	}
-
-	// Wait for all of the blocks to be registered
-	ros::Duration(2.0).sleep();	
 }
 
 }

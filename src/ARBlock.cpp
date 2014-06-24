@@ -1,4 +1,4 @@
-#include <ARBlock.h>
+#include <nxr_baxter/ARBlock.h>
 
 namespace nxr {
 
@@ -11,7 +11,7 @@ ARBlock::ARBlock()
 	pose_.orientation.w = 1.0;
 }
 
-ARBlock::ARBlock(float *dims, int i) : id(i)
+ARBlock::ARBlock(float *dims, int id) : id_(id)
 {
 	dimensions_.x = dims[0];
 	dimensions_.y = dims[1];
@@ -22,17 +22,17 @@ moveit_msgs::CollisionObject ARBlock::toCollisionObject(std::string planning_fra
 {
     moveit_msgs::CollisionObject block;
     block.header.frame_id = planning_frame;
-		std::sstream ss;
+		std::stringstream ss;
     ss << id_;
     block.id = ss.str();
 
-    vector < shape_msgs::SolidPrimitive > primitive_objects( 1 );
-    vector < geometry_msgs::Pose > primitive_object_poses( 1 );
+    std::vector < shape_msgs::SolidPrimitive > primitive_objects( 1 );
+    std::vector < geometry_msgs::Pose > primitive_object_poses( 1 );
     primitive_objects[0].type = shape_msgs::SolidPrimitive::BOX;
     primitive_objects[0].dimensions.resize(3);
-    primitive_objects[0].dimensions[0] = dimensions_[0];
-    primitive_objects[0].dimensions[1] = dimensions_[1];
-    primitive_objects[0].dimensions[2] = dimensions_[2];
+    primitive_objects[0].dimensions[0] = dims_[0];
+    primitive_objects[0].dimensions[1] = dims_[1];
+    primitive_objects[0].dimensions[2] = dims_[2];
     block.primitives = primitive_objects;
 
     block.primitive_poses = primitive_object_poses;
