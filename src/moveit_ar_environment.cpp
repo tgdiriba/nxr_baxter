@@ -9,13 +9,18 @@
 #include <geometry_msgs/Pose.h>
 #include <map>
 #include <string>
+#include <sstream>
 #include <pthread.h>
+#include <ar_block.h>
+
 
 using namespace moveit;
 using namespace std;
 
-void setupCageEnvironment(ros::NodeHandle& nh, string planning_frame = string("/base"))
+void setupCageEnvironment(string planning_frame = string("/base"))
 {
+
+	ros::NodeHandle nh;
 
 	ros::Publisher object_publisher = nh.advertise< moveit_msgs::CollisionObject >("collision_object",10);
 
@@ -47,7 +52,6 @@ void setupCageEnvironment(ros::NodeHandle& nh, string planning_frame = string("/
 
 	// Setup the deskspace
 	 
-	// 
 	for( vector< moveit_msgs::CollisionObject >::iterator object = object_collection.begin(); object != object_collection.end(); object++ ) {
 		object_publisher.publish(*object);
 	}
@@ -55,7 +59,21 @@ void setupCageEnvironment(ros::NodeHandle& nh, string planning_frame = string("/
 	ros::Duration(2.0).sleep();
 }
 
-void updateBlockPositions( vector<
+void updateBlocks( vector< ar_block > blocks )
+{
+	ros::NodeHandle nh;
+	ros::Publisher block_publisher = nh.advertise< moveit_msgs::CollisionObject >("collision_object", 10);
+	vector< moveit_msgs::CollisionObject > block_collection( blocks.size() );
+	
+	for( vector< ar_block >::iterator it = blocks.begin(); it != blocks.end(); it++ ) {
+		
+		block_publisher.publisher( it.toCollisionObject() );
+
+	}
+
+	// Wait for all of the blocks to be registered
+	ros::Duration(2.0).sleep();	
+}
 
 int main(int argc, char **argv)
 {
@@ -70,7 +88,7 @@ int main(int argc, char **argv)
 	move_group_interface::MoveGroup left_arm("left_arm");
 	move_group_interface::MoveGroup right_arm("right_arm");
 
-	setupCageEnvironment(nh);
+	setupCageEnvironment();
 
 	// Getting the PlanningScene
 	ros::ServiceClient servc = nh.serviceClient<moveit_msgs::GetPlanningScene>("/get_planning_scene");
